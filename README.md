@@ -2,7 +2,7 @@
 Solutions for [Advent of Code 2021](https://adventofcode.com/2021), presented in Java and built using Gradle.
 
 # Build Status
-[![Build Status](https://travis-ci.com/jacob-lucas/adventofcode-2021.svg?branch=main)](https://travis-ci.com/jacob-lucas/adventofcode-2021)
+[![Build Status](https://app.travis-ci.com/jacob-lucas/adventofcode-2021.svg?branch=main)](https://travis-ci.com/jacob-lucas/adventofcode-2021)
 [![Coverage Status](https://coveralls.io/repos/github/jacob-lucas/adventofcode-2021/badge.svg)](https://coveralls.io/github/jacob-lucas/adventofcode-2021)
 
 # Solutions

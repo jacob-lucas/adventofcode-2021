@@ -28,6 +28,11 @@ public class InputReaderTest {
         InputReader.read("test-input.txt");
     }
 
+    @Test(expected = IOException.class)
+    public void readGroupsUsesDefaultPath() throws IOException {
+        InputReader.readGroups("test-input.txt");
+    }
+
     @Test
     public void testReadGroups() throws IOException {
         final List<List<String>> groups = InputReader.readGroups(TEST_PATH, "grouped-input.txt");

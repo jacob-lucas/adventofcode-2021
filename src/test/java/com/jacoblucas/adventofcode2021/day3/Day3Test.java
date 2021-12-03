@@ -47,4 +47,19 @@ public class Day3Test {
     public void testGetPowerConsumption() {
         assertThat(Day3.getPowerConsumption(INPUT), is(198));
     }
+
+    @Test
+    public void testGetOxygenGeneratorRating() {
+        assertThat(Day3.getOxygenGeneratorRating(INPUT), is("10111"));
+    }
+
+    @Test
+    public void testGetCO2ScrubberRating() {
+        assertThat(Day3.getCO2ScrubberRating(INPUT), is("01010"));
+    }
+
+    @Test
+    public void testGetLifeSupportRating() {
+        assertThat(Day3.getLifeSupportRating(INPUT), is(230));
+    }
 }

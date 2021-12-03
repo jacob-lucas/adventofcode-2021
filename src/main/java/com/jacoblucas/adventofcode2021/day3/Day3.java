@@ -37,19 +37,11 @@ public class Day3 {
     }
 
     public static String getGammaRate(final List<String> input) {
-        final int bits = input.get(0).length();
-        return IntStream.range(0, bits)
-                .map(i -> mostCommonBit(input, i))
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining());
+        return getRate(input, 1);
     }
 
     public static String getEpsilonRate(final List<String> input) {
-        final int bits = input.get(0).length();
-        return IntStream.range(0, bits)
-                .map(i -> leastCommonBit(input, i))
-                .mapToObj(String::valueOf)
-                .collect(Collectors.joining());
+        return getRate(input, 0);
     }
 
     public static String getOxygenGeneratorRating(final List<String> input) {
@@ -60,12 +52,21 @@ public class Day3 {
         return getRating(input, 0, 0);
     }
 
+    private static String getRate(final List<String> input, final int precedence) {
+        final int bits = input.get(0).length();
+        return IntStream.range(0, bits)
+                .map(i -> precedence == 1 ? mostCommonBit(input, i) : leastCommonBit(input, i))
+                .mapToObj(String::valueOf)
+                .collect(Collectors.joining());
+    }
+
     private static String getRating(final List<String> input, final int pos, final int precedence) {
         if (input.size() == 1) {
             return input.get(0);
         }
 
-        final Map<String, List<String>> bitsByPosition = getBitsByPosition(input, pos);
+        final Map<String, List<String>> bitsByPosition = input.stream()
+                .collect(Collectors.groupingBy(str -> "" + str.charAt(pos)));
 
         final List<String> zeroes = bitsByPosition.get("0");
         final List<String> ones = bitsByPosition.get("1");
@@ -79,13 +80,13 @@ public class Day3 {
         }
     }
 
-    public static int mostCommonBit(final List<String> input, final int pos) {
+    static int mostCommonBit(final List<String> input, final int pos) {
         final Map<String, Integer> counts = getBitCounts(input, pos);
         final String maxKey = Collections.max(counts.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
         return Integer.parseInt(maxKey);
     }
 
-    public static int leastCommonBit(final List<String> input, final int pos) {
+    static int leastCommonBit(final List<String> input, final int pos) {
         final Map<String, Integer> counts = getBitCounts(input, pos);
         final String minKey = Collections.min(counts.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
         return Integer.parseInt(minKey);
@@ -98,10 +99,5 @@ public class Day3 {
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().size()));
-    }
-
-    private static Map<String, List<String>> getBitsByPosition(final List<String> input, final int pos) {
-        return input.stream()
-                .collect(Collectors.groupingBy(str -> "" + str.charAt(pos)));
     }
 }

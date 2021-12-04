@@ -12,13 +12,8 @@ public class Day4 {
     public static void main(String[] args) throws IOException {
         final List<List<String>> input = InputReader.readGroups("day4-input.txt");
 
-        final List<Integer> numbers = Arrays.stream(input.get(0).get(0).split(","))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-
-        final List<BingoBoard> boards = IntStream.range(1, input.size())
-                .mapToObj(i -> new BingoBoard(input.get(i)))
-                .collect(Collectors.toList());
+        final List<Integer> numbers = parseNumbers(input);
+        final List<BingoBoard> boards = parseBoards(input);
 
         final Bingo bingo = new Bingo(boards);
         bingo.run(numbers);
@@ -28,5 +23,17 @@ public class Day4 {
 
         final BingoBoard lastPlace = bingo.getLast();
         System.out.println("Last winning score: " + lastPlace.getScore());
+    }
+
+    static List<Integer> parseNumbers(final List<List<String>> input) {
+        return Arrays.stream(input.get(0).get(0).split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+    }
+
+    static List<BingoBoard> parseBoards(final List<List<String>> input) {
+        return IntStream.range(1, input.size())
+                .mapToObj(i -> new BingoBoard(input.get(i)))
+                .collect(Collectors.toList());
     }
 }

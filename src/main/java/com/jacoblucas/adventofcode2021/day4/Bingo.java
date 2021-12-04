@@ -4,28 +4,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bingo {
-    private final List<List<BingoBoard>> resultOrderMap;
+    private final List<List<BingoBoard>> resultOrderList;
     private final List<BingoBoard> boards;
 
     public Bingo(final List<BingoBoard> boards) {
         this.boards = boards;
-        resultOrderMap = new ArrayList<>();
+        resultOrderList = new ArrayList<>();
     }
 
+    // Draws numbers until there are no numbers left, or until every board has bingo
     public void run(final List<Integer> numbers) {
         int index = 0;
         while (index < numbers.size() && !boards.isEmpty()) {
             int n = numbers.get(index);
             List<BingoBoard> winners = draw(n);
             if (!winners.isEmpty()) {
-                resultOrderMap.add(winners);
+                resultOrderList.add(winners);
                 boards.removeAll(winners);
             }
             index++;
         }
     }
 
-    // Returns the winning BingoBoard in case of bingo, null otherwise
+    // Returns the winning List of BingoBoards in case of bingo, empty if there are no winners
     public List<BingoBoard> draw(final int n) {
         // mark the number on all the boards
         boards.forEach(b -> b.mark(n));
@@ -43,11 +44,13 @@ public class Bingo {
         return winners;
     }
 
+    // Returns the first winner
     public BingoBoard getFirst() {
-        return resultOrderMap.get(0).get(0);
+        return resultOrderList.get(0).get(0);
     }
 
+    // Returns the last winner
     public BingoBoard getLast() {
-        return resultOrderMap.get(resultOrderMap.size()-1).get(0);
+        return resultOrderList.get(resultOrderList.size()-1).get(0);
     }
 }

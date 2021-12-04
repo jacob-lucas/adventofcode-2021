@@ -80,7 +80,7 @@ public class BingoBoardTest {
     }
 
     @Test
-    public void testGetScore() {
+    public void testCalculateScore() {
         final BingoBoard bingoBoard = new BingoBoard(ImmutableList.of(
                 "14 21 17 24  4",
                 "10 16 15  9 19",
@@ -92,6 +92,6 @@ public class BingoBoardTest {
         bingoBoard.mark(14, 21, 17, 24, 4, 9, 23, 11, 5, 2, 0, 7);
 
         assertThat(bingoBoard.bingo(), is(true));
-        assertThat(bingoBoard.getScore(24), is(4512));
+        assertThat(bingoBoard.calculateScore(24), is(4512));
     }
 }

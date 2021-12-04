@@ -22,5 +22,11 @@ public class Day4 {
 
         final Bingo bingo = new Bingo(boards);
         bingo.run(numbers);
+
+        final BingoBoard firstPlace = bingo.getFirst();
+        System.out.println("First winning score: " + firstPlace.getScore());
+
+        final BingoBoard lastPlace = bingo.getLast();
+        System.out.println("Last winning score: " + lastPlace.getScore());
     }
 }

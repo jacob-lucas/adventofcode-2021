@@ -1,47 +1,53 @@
 package com.jacoblucas.adventofcode2021.day4;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bingo {
-    private List<BingoBoard> boards;
+    private final List<List<BingoBoard>> resultOrderMap;
+    private final List<BingoBoard> boards;
 
     public Bingo(final List<BingoBoard> boards) {
         this.boards = boards;
+        resultOrderMap = new ArrayList<>();
     }
 
-    public void run(List<Integer> numbers) {
+    public void run(final List<Integer> numbers) {
         int index = 0;
-        int lastCalled = -1;
-        BingoBoard winner = null;
-        while (winner == null && index < numbers.size()) {
+        while (index < numbers.size() && !boards.isEmpty()) {
             int n = numbers.get(index);
-            lastCalled = n;
-            winner = draw(n);
+            List<BingoBoard> winners = draw(n);
+            if (!winners.isEmpty()) {
+                resultOrderMap.add(winners);
+                boards.removeAll(winners);
+            }
             index++;
-        }
-
-        if (winner == null) {
-            System.out.println("There is no winner!");
-        } else {
-            System.out.println("The winning board is:");
-            System.out.println(Arrays.deepToString(winner.getBoard()));
-            System.out.println("Winning score: " + winner.getScore(lastCalled));
         }
     }
 
     // Returns the winning BingoBoard in case of bingo, null otherwise
-    public BingoBoard draw(final int n) {
+    public List<BingoBoard> draw(final int n) {
         // mark the number on all the boards
         boards.forEach(b -> b.mark(n));
+
+        final List<BingoBoard> winners = new ArrayList<>();
 
         // bingo?
         for (final BingoBoard bingoBoard : boards) {
             if (bingoBoard.bingo()) {
-                return bingoBoard;
+                bingoBoard.calculateScore(n);
+                winners.add(bingoBoard);
             }
         }
 
-        return null;
+        return winners;
+    }
+
+    public BingoBoard getFirst() {
+        return resultOrderMap.get(0).get(0);
+    }
+
+    public BingoBoard getLast() {
+        return resultOrderMap.get(resultOrderMap.size()-1).get(0);
     }
 }

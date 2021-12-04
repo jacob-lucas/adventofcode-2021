@@ -11,17 +11,20 @@ public class BingoBoard {
     private final int[][] board;
     private final int[][] marked;
 
+    private int score;
+
     public BingoBoard(final List<String> input) {
+        score = -1;
         board = new int[SIZE][SIZE];
         marked = new int[SIZE][SIZE];
+
         for (int i = 0; i < SIZE; i++) {
             final String rowStr = input.get(i);
             final String[] parts = rowStr.split(" ");
-
             final List<Integer> row = new ArrayList<>();
-            for (int j = 0; j < parts.length; j++) {
-                if (!parts[j].isEmpty()) {
-                    row.add(Integer.parseInt(parts[j]));
+            for (String part : parts) {
+                if (!part.isEmpty()) {
+                    row.add(Integer.parseInt(part));
                 }
             }
             board[i] = row.stream().mapToInt(n -> n).toArray();
@@ -76,7 +79,7 @@ public class BingoBoard {
         return false;
     }
 
-    public int getScore(final int lastNumberCalled) {
+    public int calculateScore(final int lastNumberCalled) {
         int sum = 0;
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -86,6 +89,11 @@ public class BingoBoard {
             }
         }
 
-        return sum * lastNumberCalled;
+        score = sum * lastNumberCalled;
+        return score;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

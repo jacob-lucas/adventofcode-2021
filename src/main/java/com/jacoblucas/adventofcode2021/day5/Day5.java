@@ -14,12 +14,18 @@ public class Day5 {
 
         final int width = getXLimit(vents) + 1;
         final int height = getYLimit(vents) + 1;
-        final Grid grid = new Grid(width, height);
 
+        // Part 1
+        Grid grid = new Grid(width, height);
+        grid.track(vents.stream()
+                .filter(v -> v.isVertical() || v.isHorizontal())
+                .collect(Collectors.toList()));
+        System.out.println(grid.countWhere(i1 -> i1 >= 2));
+
+        // Part 2
+        grid = new Grid(width, height);
         grid.track(vents);
-
-        int overlapping = grid.countWhere(i -> i >= 2);
-        System.out.println(overlapping);
+        System.out.println(grid.countWhere(i -> i >= 2));
     }
 
     static List<Vent> parse(final List<String> input) {

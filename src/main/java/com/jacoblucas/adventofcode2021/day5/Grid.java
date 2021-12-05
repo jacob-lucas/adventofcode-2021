@@ -71,6 +71,19 @@ public class Grid {
                 int currentGridValue = gridArray[i][x1];
                 gridArray[i][x1] = currentGridValue + 1;
             }
+        } else {
+            // 45 degree diagonal
+            final int dx = x2 - x1 > 0 ? 1 : -1;
+            final int dy = y2 - y1 > 0 ? 1 : -1;
+
+            int x = x1;
+            int y = y1;
+            while (x != x2+dx && y != y2+dy) {
+                int currentGridValue = gridArray[y][x];
+                gridArray[y][x] = currentGridValue + 1;
+                x += dx;
+                y += dy;
+            }
         }
     }
 

@@ -41,50 +41,38 @@ public class Grid {
         final int x2 = vent.getX2();
         final int y2 = vent.getY2();
 
-        int lower;
-        int upper;
+        final int dx = x2 == x1 ? 0 : x2 - x1 > 0 ? 1 : -1;
+        final int dy = y2 == y1 ? 0 : y2 - y1 > 0 ? 1 : -1;
+
         if (vent.isHorizontal()) {
             // y values are the same
-            if (x1 < x2) {
-                lower = x1;
-                upper = x2;
-            } else {
-                lower = x2;
-                upper = x1;
-            }
-
-            for (int i = lower; i <= upper; i++) {
-                int currentGridValue = gridArray[y1][i];
-                gridArray[y1][i] = currentGridValue + 1;
+            int x = x1;
+            while (x != x2+dx) {
+                track(x, y1);
+                x += dx;
             }
         } else if (vent.isVertical()) {
             // x values are the same
-            if (y1 < y2) {
-                lower = y1;
-                upper = y2;
-            } else {
-                lower = y2;
-                upper = y1;
-            }
-
-            for (int i = lower; i <= upper; i++) {
-                int currentGridValue = gridArray[i][x1];
-                gridArray[i][x1] = currentGridValue + 1;
+            int y = y1;
+            while (y != y2+dy) {
+                track(x1, y);
+                y += dy;
             }
         } else {
             // 45 degree diagonal
-            final int dx = x2 - x1 > 0 ? 1 : -1;
-            final int dy = y2 - y1 > 0 ? 1 : -1;
-
             int x = x1;
             int y = y1;
             while (x != x2+dx && y != y2+dy) {
-                int currentGridValue = gridArray[y][x];
-                gridArray[y][x] = currentGridValue + 1;
+                track(x, y);
                 x += dx;
                 y += dy;
             }
         }
+    }
+
+    private void track(final int x, final int y) {
+        int currentGridValue = gridArray[y][x];
+        gridArray[y][x] = currentGridValue + 1;
     }
 
     public int countWhere(final Function<Integer, Boolean> func) {

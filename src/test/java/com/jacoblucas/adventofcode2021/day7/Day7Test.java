@@ -29,7 +29,13 @@ public class Day7Test {
 
     @Test
     public void testMoveCrabsToPositionBasicCost() {
-        final int fuelCost = Day7.moveCrabsToPosition(crabs, 2);
+        final int fuelCost = Day7.moveCrabsToPosition(crabs, 2, Day7::basicCost);
         assertThat(fuelCost, is(37));
+    }
+
+    @Test
+    public void testMoveCrabsToPositionComplexCost() {
+        final int fuelCost = Day7.moveCrabsToPosition(crabs, 2, Day7::complexCost);
+        assertThat(fuelCost, is(206));
     }
 }

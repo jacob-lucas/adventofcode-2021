@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Day7 {
     public static void main(String[] args) throws IOException {
@@ -16,13 +17,11 @@ public class Day7 {
         final Map<Integer, Integer> crabs = parse(input.get(0));
 
         // Part 1
-        int minFuelCost = Integer.MAX_VALUE;
-        for (int i=0; i<2000; i++) { // eyeballed the approx max value from the input list
-            final int fuelCost = moveCrabsToPosition(new HashMap<>(crabs), i);
-            if (fuelCost < minFuelCost) {
-                minFuelCost = fuelCost;
-            }
-        }
+        int minFuelCost = getMinFuelCost(crabs, Day7::basicCost);
+        System.out.println(minFuelCost);
+
+        // Part 2
+        minFuelCost = getMinFuelCost(crabs, Day7::complexCost);
         System.out.println(minFuelCost);
     }
 
@@ -34,7 +33,22 @@ public class Day7 {
                 .collect(Collectors.toMap(e -> Integer.valueOf(e.getKey()), e -> e.getValue().size()));
     }
 
-    public static int moveCrabsToPosition(final Map<Integer, Integer> crabs, final int position) {
+    private static int getMinFuelCost(final Map<Integer, Integer> crabs, final IntIntFunction<Integer> costFunc) {
+        int minFuelCost = Integer.MAX_VALUE;
+        for (int i=0; i<2000; i++) { // eyeballed the approx max value from the input list
+            final int fuelCost = moveCrabsToPosition(new HashMap<>(crabs), i, costFunc);
+            if (fuelCost < minFuelCost) {
+                minFuelCost = fuelCost;
+            }
+        }
+        return minFuelCost;
+    }
+
+    public static int moveCrabsToPosition(
+            final Map<Integer, Integer> crabs,
+            final int position,
+            final IntIntFunction<Integer> costFunc
+    ) {
         int fuelCost = 0;
         final List<Integer> positionsToMove = crabs.keySet()
                 .stream()
@@ -45,10 +59,18 @@ public class Day7 {
             final int crabsAtPosition = crabs.getOrDefault(pos, 0);
             crabs.put(position, crabs.getOrDefault(position, 0) + crabsAtPosition);
             crabs.remove(pos);
-            final int cost = Math.abs(position - pos);
+            final int cost = costFunc.apply(position, pos);
             fuelCost += cost * crabsAtPosition;
         }
 
         return fuelCost;
+    }
+
+    public static int basicCost(int from, int to) {
+        return Math.abs(from - to);
+    }
+
+    public static int complexCost(int from, int to) {
+        return IntStream.range(1, basicCost(from, to) + 1).sum();
     }
 }

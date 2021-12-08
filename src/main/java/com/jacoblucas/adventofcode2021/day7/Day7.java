@@ -1,5 +1,6 @@
 package com.jacoblucas.adventofcode2021.day7;
 
+import com.jacoblucas.adventofcode2021.interfaces.IntIntFunction;
 import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class Day7 {
                 .collect(Collectors.toMap(e -> Integer.valueOf(e.getKey()), e -> e.getValue().size()));
     }
 
-    private static int getMinFuelCost(final Map<Integer, Integer> crabs, final IntIntFunction<Integer> costFunc) {
+    public static int getMinFuelCost(final Map<Integer, Integer> crabs, final IntIntFunction<Integer> costFunc) {
         int minFuelCost = Integer.MAX_VALUE;
         for (int i=0; i<2000; i++) { // eyeballed the approx max value from the input list
             final int fuelCost = moveCrabsToPosition(new HashMap<>(crabs), i, costFunc);

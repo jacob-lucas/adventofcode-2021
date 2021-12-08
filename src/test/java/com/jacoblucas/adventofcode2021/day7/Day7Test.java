@@ -28,14 +28,14 @@ public class Day7Test {
     }
 
     @Test
-    public void testMoveCrabsToPositionBasicCost() {
-        final int fuelCost = Day7.moveCrabsToPosition(crabs, 2, Day7::basicCost);
+    public void testGetMinFuelCostBasicCost() {
+        final int fuelCost = Day7.getMinFuelCost(crabs, Day7::basicCost);
         assertThat(fuelCost, is(37));
     }
 
     @Test
-    public void testMoveCrabsToPositionComplexCost() {
-        final int fuelCost = Day7.moveCrabsToPosition(crabs, 2, Day7::complexCost);
+    public void testGetMinFuelCostComplexCost() {
+        final int fuelCost = Day7.getMinFuelCost(crabs, Day7::complexCost);
         assertThat(fuelCost, is(206));
     }
 }

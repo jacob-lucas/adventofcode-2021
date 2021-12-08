@@ -36,6 +36,6 @@ public class Day7Test {
     @Test
     public void testGetMinFuelCostComplexCost() {
         final int fuelCost = Day7.getMinFuelCost(crabs, Day7::complexCost);
-        assertThat(fuelCost, is(206));
+        assertThat(fuelCost, is(168));
     }
 }

@@ -28,16 +28,16 @@ public class Day8Test {
     @Test
     public void testDecode() {
         final Map<String, Integer> decoded = new HashMap<>();
-        decoded.put("acedgfb", 8);
-        decoded.put("cdfbe", 5);
-        decoded.put("gcdfa", 2);
-        decoded.put("fbcad", 3);
-        decoded.put("dab", 7);
-        decoded.put("cefabd", 9);
-        decoded.put("cdfgeb", 6);
-        decoded.put("eafb", 4);
-        decoded.put("cagedb", 0);
-        decoded.put("ab", 1);
+        decoded.put(Day8.sortString("acedgfb"), 8);
+        decoded.put(Day8.sortString("cdfbe"), 5);
+        decoded.put(Day8.sortString("gcdfa"), 2);
+        decoded.put(Day8.sortString("fbcad"), 3);
+        decoded.put(Day8.sortString("dab"), 7);
+        decoded.put(Day8.sortString("cefabd"), 9);
+        decoded.put(Day8.sortString("cdfgeb"), 6);
+        decoded.put(Day8.sortString("eafb"), 4);
+        decoded.put(Day8.sortString("cagedb"), 0);
+        decoded.put(Day8.sortString("ab"), 1);
         assertThat(Day8.decode("acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab"), is(decoded));
     }
 

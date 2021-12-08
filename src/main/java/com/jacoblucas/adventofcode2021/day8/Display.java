@@ -1,6 +1,9 @@
 package com.jacoblucas.adventofcode2021.day8;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Display {
@@ -37,4 +40,68 @@ public class Display {
     public static int[] SEVEN      = { 1,   0,   1,   0,   0,   1,   0 };
     public static int[] EIGHT      = { 1,   1,   1,   1,   1,   1,   1 };
     public static int[] NINE       = { 1,   1,   1,   1,   0,   1,   1 };
+
+    public static List<String> print(final int n) {
+        final String str = String.valueOf(n);
+        final List<List<String>> digitStrings = new ArrayList<>();
+        for (char c : str.toCharArray()) {
+            final int i = Integer.parseInt(""+c);
+            int[] digitArr = {};
+            if (i == 0) {
+                digitArr = ZERO;
+            } else if (i == 1) {
+                digitArr = ONE;
+            } else if (i == 2) {
+                digitArr = TWO;
+            } else if (i == 3) {
+                digitArr = THREE;
+            } else if (i == 4) {
+                digitArr = FOUR;
+            } else if (i == 5) {
+                digitArr = FIVE;
+            } else if (i == 6) {
+                digitArr = SIX;
+            } else if (i == 7) {
+                digitArr = SEVEN;
+            } else if (i == 8) {
+                digitArr = EIGHT;
+            } else if (i == 9) {
+                digitArr = NINE;
+            }
+            digitStrings.add(digitToStringList(digitArr));
+        }
+        return print(digitStrings);
+    }
+
+    static List<String> digitToStringList(final int[] digit) {
+        final String digitTemplate = " 0000 |1    2|1    2| 3333 |4    5|4    5| 6666 ";
+        final String positionsStr = new String(POSITIONS);
+        String result = digitTemplate;
+        for (int i = 0; i < 7; i++) {
+            final String replacement = digit[i] == 1 ? ""+ positionsStr.charAt(i) : ".";
+            result = result.replaceAll(""+i, replacement);
+        }
+
+        return Arrays.asList(result.split("\\|"));
+    }
+
+    private static List<String> print(final List<List<String>> digitStrings) {
+        final int digitHeight = 7;
+        final String spacing = "  ";
+
+        final List<String> result = new ArrayList<>();
+        for (int i = 0; i < digitHeight; i++) {
+            final StringBuilder sb = new StringBuilder();
+            for (final List<String> digitString : digitStrings) {
+                sb.append(digitString.get(i));
+                sb.append(spacing);
+            }
+            result.add(sb.toString());
+        }
+
+        System.out.println("------------------------------");
+        result.forEach(System.out::println);
+        System.out.println("------------------------------\n");
+        return result;
+    }
 }

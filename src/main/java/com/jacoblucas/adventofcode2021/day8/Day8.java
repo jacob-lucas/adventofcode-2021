@@ -162,8 +162,10 @@ public class Day8 {
                 .map(pattern -> decoded.getOrDefault(sortString(pattern), 0))
                 .map(String::valueOf)
                 .collect(Collectors.joining());
-        System.out.println(outputPatterns + ": " + result);
-        return Integer.parseInt(result);
+        int n = Integer.parseInt(result);
+        System.out.println(outputPatterns + ":");
+        Display.print(n);
+        return n;
     }
 
     // Takes in a map of strings (signal patterns -> output), decodes them, and returns the sum of the result values.

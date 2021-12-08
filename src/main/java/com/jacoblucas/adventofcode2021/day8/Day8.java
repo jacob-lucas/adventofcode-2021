@@ -40,7 +40,7 @@ public class Day8 {
         System.out.println(sum);
     }
 
-    public static Map<String, String> parseInput(List<String> input) {
+    public static Map<String, String> parseInput(final List<String> input) {
         final Map<String, String> signalPatterns = new HashMap<>();
         for (final String pattern : input) {
             final int pipe = pattern.indexOf('|');
@@ -107,8 +107,18 @@ public class Day8 {
                 .collect(Collectors.toMap(Day8::sortString, p -> decode(p, key)));
     }
 
+    /**
+     * Decodes a string by forming an integer array of 0s and 1s against the provided key.
+     * This int array will be matched against the intended int arrays (by index) for each number
+     * formed on the display to determine its integer value.
+     * @param str the input string to decode, e.g. "acf".
+     * @param key the char array key with which to match against the input string, e.g. {'a', 'b', 'c', 'd', 'e', 'f', 'g'}
+     * @return the display number represented by this string, as decoded by this key, or -1 if it could not be decoded.
+     */
     public static int decode(final String str, final char[] key) {
         int[] result = new int[7];
+
+        // Turn the string into an integer array, based on the provided key and the indices of the characters in the key
         for (final char c : str.toCharArray()) {
             for (int i = 0; i < 7; i++) {
                 if (key[i] == c) {
@@ -117,6 +127,7 @@ public class Day8 {
             }
         }
 
+        // If the resultant array matches any of the numbers, we can successfully decode with this key.
         if (Arrays.equals(result, ZERO)) {
             return 0;
         } else if (Arrays.equals(result, ONE)) {
@@ -139,31 +150,26 @@ public class Day8 {
             return 9;
         }
 
+        // The key could not be used to decode this input
         return -1;
     }
 
-    public static int decodeOutput(final String outputPattern, final Map<String, Integer> decoded) {
-        final List<Integer> vals = Arrays.stream(outputPattern.split(" "))
-                .map(val -> decoded.getOrDefault(sortString(val), 0))
-                .collect(Collectors.toList());
-        final StringBuilder sb = new StringBuilder();
-        vals.forEach(sb::append);
-        return Integer.parseInt(sb.toString());
+    // For a string of output patterns, decode them against the provided map, and return their result.
+    // The result is an integer formed by the interpreted string value of all the output numbers concatenated.
+    // E.g. ("cdfeb fcadb cdfeb cdbaf", <map>) -> 5353
+    public static int decodeOutput(final String outputPatterns, final Map<String, Integer> decoded) {
+        final String result = Arrays.stream(outputPatterns.split(" "))
+                .map(pattern -> decoded.getOrDefault(sortString(pattern), 0))
+                .map(String::valueOf)
+                .collect(Collectors.joining());
+        System.out.println(outputPatterns + ": " + result);
+        return Integer.parseInt(result);
     }
 
+    // Takes in a map of strings (signal patterns -> output), decodes them, and returns the sum of the result values.
     public static int getOutputSum(final Map<String, String> signalPatterns) {
         return signalPatterns.entrySet().stream()
-                .mapToInt(e -> {
-                    final Map<String, Integer> decoded = decode(e.getKey());
-                    final List<Integer> vals = Arrays.stream(e.getValue().split(" "))
-                            .map(val -> decoded.getOrDefault(sortString(val), 0))
-                            .collect(Collectors.toList());
-                    final StringBuilder sb = new StringBuilder();
-                    vals.forEach(sb::append);
-                    final int result = Integer.parseInt(sb.toString());
-                    System.out.println(e.getValue() + ": " + result);
-                    return result;
-                })
+                .mapToInt(e -> decodeOutput(e.getValue(), decode(e.getKey())))
                 .sum();
     }
 }

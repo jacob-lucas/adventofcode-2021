@@ -1,5 +1,6 @@
 package com.jacoblucas.adventofcode2021.day5;
 
+import com.jacoblucas.adventofcode2021.interfaces.ImmutablePoint;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -10,10 +11,8 @@ public class VentTest {
     public void testParse() {
         final Vent vent = Vent.parse("0,9 -> 5,8");
         final Vent expected = ImmutableVent.builder()
-                .x1(0)
-                .y1(9)
-                .x2(5)
-                .y2(8)
+                .point1(ImmutablePoint.of(0, 9))
+                .point2(ImmutablePoint.of(5, 8))
                 .build();
         assertThat(vent, is(expected));
     }

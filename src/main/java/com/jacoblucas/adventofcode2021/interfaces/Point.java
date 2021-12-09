@@ -1,4 +1,4 @@
-package com.jacoblucas.adventofcode2021.day9;
+package com.jacoblucas.adventofcode2021.interfaces;
 
 import org.immutables.value.Value;
 

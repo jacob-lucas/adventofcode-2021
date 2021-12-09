@@ -1,6 +1,8 @@
 package com.jacoblucas.adventofcode2021.day9;
 
 import com.google.common.collect.ImmutableList;
+import com.jacoblucas.adventofcode2021.interfaces.ImmutablePoint;
+import com.jacoblucas.adventofcode2021.interfaces.Point;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -12,13 +14,14 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.assertThat;
 
 public class Day9Test {
-    private final int[][] heightmap = {
+    private static final int[][] HEIGHTMAP = {
             {2,1,9,9,9,4,3,2,1,0},
             {3,9,8,7,8,9,4,9,2,1},
             {9,8,5,6,7,8,9,8,9,2},
             {8,7,6,7,8,9,6,7,8,9},
             {9,8,9,9,9,6,5,6,7,8}
     };
+
     @Test
     public void testParse() {
         final List<String> input = ImmutableList.of(
@@ -31,13 +34,13 @@ public class Day9Test {
         final int[][] parsed = Day9.parse(input);
 
         for (int i = 0; i < parsed.length; i++) {
-            assertThat(Arrays.equals(parsed[i], heightmap[i]), is(true));
+            assertThat(Arrays.equals(parsed[i], HEIGHTMAP[i]), is(true));
         }
     }
 
     @Test
     public void testFindLowPoints() {
-        assertThat(Day9.findLowPoints(heightmap), is(ImmutableList.of(
+        assertThat(Day9.findLowPoints(HEIGHTMAP), is(ImmutableList.of(
                 ImmutablePoint.of(1, 0),
                 ImmutablePoint.of(9, 0),
                 ImmutablePoint.of(2, 2),
@@ -47,10 +50,10 @@ public class Day9Test {
 
     @Test
     public void testGetRiskLevel() {
-        assertThat(Day9.riskLevel(ImmutablePoint.of(1, 0), heightmap), is(2));
-        assertThat(Day9.riskLevel(ImmutablePoint.of(9, 0), heightmap), is(1));
-        assertThat(Day9.riskLevel(ImmutablePoint.of(2, 2), heightmap), is(6));
-        assertThat(Day9.riskLevel(ImmutablePoint.of(6, 4), heightmap), is(6));
+        assertThat(Day9.riskLevel(ImmutablePoint.of(1, 0), HEIGHTMAP), is(2));
+        assertThat(Day9.riskLevel(ImmutablePoint.of(9, 0), HEIGHTMAP), is(1));
+        assertThat(Day9.riskLevel(ImmutablePoint.of(2, 2), HEIGHTMAP), is(6));
+        assertThat(Day9.riskLevel(ImmutablePoint.of(6, 4), HEIGHTMAP), is(6));
     }
 
     @Test
@@ -59,7 +62,7 @@ public class Day9Test {
                 ImmutablePoint.of(0,0),
                 ImmutablePoint.of(0,1),
                 ImmutablePoint.of(1,0));
-        assertThat(Day9.discoverBasin(ImmutablePoint.of(1, 0), heightmap), containsInAnyOrder(expected.toArray()));
+        assertThat(Day9.discoverBasin(ImmutablePoint.of(1, 0), HEIGHTMAP), containsInAnyOrder(expected.toArray()));
     }
 
     @Test
@@ -74,7 +77,7 @@ public class Day9Test {
         expected.add(ImmutablePoint.of(9, 0));
         expected.add(ImmutablePoint.of(9, 1));
         expected.add(ImmutablePoint.of(9, 2));
-        assertThat(Day9.discoverBasin(ImmutablePoint.of(9, 0), heightmap), containsInAnyOrder(expected.toArray()));
+        assertThat(Day9.discoverBasin(ImmutablePoint.of(9, 0), HEIGHTMAP), containsInAnyOrder(expected.toArray()));
     }
 
     @Test
@@ -94,7 +97,7 @@ public class Day9Test {
         expected.add(ImmutablePoint.of(3, 3));
         expected.add(ImmutablePoint.of(4, 3));
         expected.add(ImmutablePoint.of(1, 4));
-        assertThat(Day9.discoverBasin(ImmutablePoint.of(2, 2), heightmap), containsInAnyOrder(expected.toArray()));
+        assertThat(Day9.discoverBasin(ImmutablePoint.of(2, 2), HEIGHTMAP), containsInAnyOrder(expected.toArray()));
     }
 
     @Test
@@ -109,6 +112,6 @@ public class Day9Test {
         expected.add(ImmutablePoint.of(7, 4));
         expected.add(ImmutablePoint.of(8, 4));
         expected.add(ImmutablePoint.of(9, 4));
-        assertThat(Day9.discoverBasin(ImmutablePoint.of(6, 4), heightmap), containsInAnyOrder(expected.toArray()));
+        assertThat(Day9.discoverBasin(ImmutablePoint.of(6, 4), HEIGHTMAP), containsInAnyOrder(expected.toArray()));
     }
 }

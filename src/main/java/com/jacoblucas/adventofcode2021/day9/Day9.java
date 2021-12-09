@@ -1,5 +1,7 @@
 package com.jacoblucas.adventofcode2021.day9;
 
+import com.jacoblucas.adventofcode2021.interfaces.ImmutablePoint;
+import com.jacoblucas.adventofcode2021.interfaces.Point;
 import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
@@ -107,7 +109,7 @@ public class Day9 {
                     int neighbourY = y + dy;
                     if (validDirection(dx, dy) && inBounds(neighbourX, neighbourY, heightmap)) {
                         // found a valid neighbour
-                        final ImmutablePoint neighbour = ImmutablePoint.of(neighbourX, neighbourY);
+                        final Point neighbour = ImmutablePoint.of(neighbourX, neighbourY);
                         if (!visited.contains(neighbour) && heightmap[neighbourY][neighbourX] != 9) {
                             neighbours.add(neighbour);
                         }

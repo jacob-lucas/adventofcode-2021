@@ -1,16 +1,34 @@
 package com.jacoblucas.adventofcode2021.day5;
 
+import com.jacoblucas.adventofcode2021.interfaces.ImmutablePoint;
+import com.jacoblucas.adventofcode2021.interfaces.Point;
 import org.immutables.value.Value;
 
 @Value.Immutable
 public abstract class Vent {
-    public abstract int getX1();
+    public abstract Point getPoint1();
 
-    public abstract int getY1();
+    public abstract Point getPoint2();
 
-    public abstract int getX2();
+    @Value.Derived
+    public int getX1() {
+        return getPoint1().getX();
+    }
 
-    public abstract int getY2();
+    @Value.Derived
+    public int getY1() {
+        return getPoint1().getY();
+    }
+
+    @Value.Derived
+    public int getX2() {
+        return getPoint2().getX();
+    }
+
+    @Value.Derived
+    public int getY2() {
+        return getPoint2().getY();
+    }
 
     @Value.Derived
     public boolean isHorizontal() {
@@ -27,10 +45,8 @@ public abstract class Vent {
         final String[] coord1 = parts[0].split(",");
         final String[] coord2 = parts[2].split(",");
         return ImmutableVent.builder()
-                .x1(Integer.parseInt(coord1[0]))
-                .y1(Integer.parseInt(coord1[1]))
-                .x2(Integer.parseInt(coord2[0]))
-                .y2(Integer.parseInt(coord2[1]))
+                .point1(ImmutablePoint.of(Integer.parseInt(coord1[0]), Integer.parseInt(coord1[1])))
+                .point2(ImmutablePoint.of(Integer.parseInt(coord2[0]), Integer.parseInt(coord2[1])))
                 .build();
     }
 }

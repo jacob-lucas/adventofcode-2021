@@ -1,10 +1,12 @@
 package com.jacoblucas.adventofcode2021.day8;
 
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,17 +15,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.jacoblucas.adventofcode2021.day8.Display.EIGHT;
-import static com.jacoblucas.adventofcode2021.day8.Display.FIVE;
-import static com.jacoblucas.adventofcode2021.day8.Display.FOUR;
-import static com.jacoblucas.adventofcode2021.day8.Display.NINE;
-import static com.jacoblucas.adventofcode2021.day8.Display.ONE;
+import static com.jacoblucas.adventofcode2021.day8.Display.DISPLAY_VALUE_MAP;
 import static com.jacoblucas.adventofcode2021.day8.Display.POSITIONS;
-import static com.jacoblucas.adventofcode2021.day8.Display.SEVEN;
-import static com.jacoblucas.adventofcode2021.day8.Display.SIX;
-import static com.jacoblucas.adventofcode2021.day8.Display.THREE;
-import static com.jacoblucas.adventofcode2021.day8.Display.TWO;
-import static com.jacoblucas.adventofcode2021.day8.Display.ZERO;
 
 public class Day8 {
     public static void main(String[] args) throws IOException {
@@ -77,7 +70,8 @@ public class Day8 {
     }
 
     public static Map<String, Integer> decode(final String signalPatterns) {
-        final List<Integer> boxed = new String(POSITIONS).chars()
+        final List<Integer> boxed = POSITIONS.stream()
+                .mapToInt(c -> (int) c)
                 .boxed()
                 .collect(Collectors.toList());
 
@@ -86,22 +80,13 @@ public class Day8 {
 
         // One of these must have success in decoding everything!
         final List<Integer> intListKey = permutations.stream()
-                .filter(key -> {
-                    char[] keyCharArray = new char[7];
-                    for (int i = 0; i < 7; i++) {
-                        keyCharArray[i] = (char) key.get(i).intValue();
-                    }
-                    return patterns.stream()
-                            .mapToInt(p -> decode(p, keyCharArray))
-                            .noneMatch(i -> i == -1);
-                })
+                .filter(key -> patterns.stream()
+                        .mapToInt(p -> decode(p, buildCharacterKey(key)))
+                        .noneMatch(i -> i == -1))
                 .findFirst()
-                .get();
+                .orElse(ImmutableList.of());
 
-        final char[] key = new char[7];
-        for (int i = 0; i < 7; i++) {
-            key[i] = (char) intListKey.get(i).intValue();
-        }
+        final List<Character> key = buildCharacterKey(intListKey);
 
         return patterns.stream()
                 .collect(Collectors.toMap(Day8::sortString, p -> decode(p, key)));
@@ -115,43 +100,20 @@ public class Day8 {
      * @param key the char array key with which to match against the input string, e.g. {'a', 'b', 'c', 'd', 'e', 'f', 'g'}
      * @return the display number represented by this string, as decoded by this key, or -1 if it could not be decoded.
      */
-    public static int decode(final String str, final char[] key) {
+    public static int decode(final String str, final List<Character> key) {
         int[] result = new int[7];
 
         // Turn the string into an integer array, based on the provided key and the indices of the characters in the key
         for (final char c : str.toCharArray()) {
             for (int i = 0; i < 7; i++) {
-                if (key[i] == c) {
+                if (key.get(i) == c) {
                     result[i] = 1;
                 }
             }
         }
 
         // If the resultant array matches any of the numbers, we can successfully decode with this key.
-        if (Arrays.equals(result, ZERO)) {
-            return 0;
-        } else if (Arrays.equals(result, ONE)) {
-            return 1;
-        } else if (Arrays.equals(result, TWO)) {
-            return 2;
-        } else if (Arrays.equals(result, THREE)) {
-            return 3;
-        } else if (Arrays.equals(result, FOUR)) {
-            return 4;
-        } else if (Arrays.equals(result, FIVE)) {
-            return 5;
-        } else if (Arrays.equals(result, SIX)) {
-            return 6;
-        } else if (Arrays.equals(result, SEVEN)) {
-            return 7;
-        } else if (Arrays.equals(result, EIGHT)) {
-            return 8;
-        } else if (Arrays.equals(result, NINE)) {
-            return 9;
-        }
-
-        // The key could not be used to decode this input
-        return -1;
+        return DISPLAY_VALUE_MAP.getOrDefault(Display.toIntegerList(result), -1);
     }
 
     // For a string of output patterns, decode them against the provided map, and return their result.
@@ -173,5 +135,13 @@ public class Day8 {
         return signalPatterns.entrySet().stream()
                 .mapToInt(e -> decodeOutput(e.getValue(), decode(e.getKey())))
                 .sum();
+    }
+
+    private static List<Character> buildCharacterKey(final List<Integer> ints) {
+        final List<Character> key = new ArrayList<>();
+        for (int i = 0; i < 7; i++) {
+            key.add((char) ints.get(i).intValue());
+        }
+        return key;
     }
 }

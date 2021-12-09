@@ -1,13 +1,37 @@
 package com.jacoblucas.adventofcode2021.day8;
 
+import com.google.common.base.Joiner;
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Display {
     public static Map<String, Integer> NUMBERS = new HashMap<>();
+    public static Map<List<Integer>, Integer> DISPLAY_VALUE_MAP = new HashMap<>();
+
+    //    aaaa (0)
+    // b (1)    c (2)
+    // b        c
+    //    dddd (3)
+    // e (4)    f (5)
+    // e        f
+    //    gggg (6)
+    public static List<Character> POSITIONS = ImmutableList.of('a', 'b', 'c', 'd', 'e', 'f', 'g');
+    public static List<Integer>   ZERO      = ImmutableList.of( 1,   1,   1,   0,   1,   1,   1);
+    public static List<Integer>   ONE       = ImmutableList.of( 0,   0,   1,   0,   0,   1,   0);
+    public static List<Integer>   TWO       = ImmutableList.of( 1,   0,   1,   1,   1,   0,   1);
+    public static List<Integer>   THREE     = ImmutableList.of( 1,   0,   1,   1,   0,   1,   1);
+    public static List<Integer>   FOUR      = ImmutableList.of( 0,   1,   1,   1,   0,   1,   0);
+    public static List<Integer>   FIVE      = ImmutableList.of( 1,   1,   0,   1,   0,   1,   1);
+    public static List<Integer>   SIX       = ImmutableList.of( 1,   1,   0,   1,   1,   1,   1);
+    public static List<Integer>   SEVEN     = ImmutableList.of( 1,   0,   1,   0,   0,   1,   0);
+    public static List<Integer>   EIGHT     = ImmutableList.of( 1,   1,   1,   1,   1,   1,   1);
+    public static List<Integer>   NINE      = ImmutableList.of( 1,   1,   1,   1,   0,   1,   1);
 
     static {
         NUMBERS.put("abcefg", 0);  // 6
@@ -20,65 +44,41 @@ public class Display {
         NUMBERS.put("acf", 7);     // 3
         NUMBERS.put("abcdefg", 8); // 7
         NUMBERS.put("acbdfg", 9);  // 5
-    }
 
-    //    aaaa (0)
-    // b (1)    c (2)
-    // b        c
-    //    dddd (3)
-    // e (4)    f (5)
-    // e        f
-    //    gggg (6)
-    public static char[] POSITIONS = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-    public static int[] ZERO       = { 1,   1,   1,   0,   1,   1,   1 };
-    public static int[] ONE        = { 0,   0,   1,   0,   0,   1,   0 };
-    public static int[] TWO        = { 1,   0,   1,   1,   1,   0,   1 };
-    public static int[] THREE      = { 1,   0,   1,   1,   0,   1,   1 };
-    public static int[] FOUR       = { 0,   1,   1,   1,   0,   1,   0 };
-    public static int[] FIVE       = { 1,   1,   0,   1,   0,   1,   1 };
-    public static int[] SIX        = { 1,   1,   0,   1,   1,   1,   1 };
-    public static int[] SEVEN      = { 1,   0,   1,   0,   0,   1,   0 };
-    public static int[] EIGHT      = { 1,   1,   1,   1,   1,   1,   1 };
-    public static int[] NINE       = { 1,   1,   1,   1,   0,   1,   1 };
+        DISPLAY_VALUE_MAP.put(ZERO, 0);
+        DISPLAY_VALUE_MAP.put(ONE, 1);
+        DISPLAY_VALUE_MAP.put(TWO, 2);
+        DISPLAY_VALUE_MAP.put(THREE, 3);
+        DISPLAY_VALUE_MAP.put(FOUR, 4);
+        DISPLAY_VALUE_MAP.put(FIVE, 5);
+        DISPLAY_VALUE_MAP.put(SIX, 6);
+        DISPLAY_VALUE_MAP.put(SEVEN, 7);
+        DISPLAY_VALUE_MAP.put(EIGHT, 8);
+        DISPLAY_VALUE_MAP.put(NINE, 9);
+    }
 
     public static List<String> print(final int n) {
         final String str = String.valueOf(n);
         final List<List<String>> digitStrings = new ArrayList<>();
         for (char c : str.toCharArray()) {
             final int i = Integer.parseInt(""+c);
-            int[] digitArr = {};
-            if (i == 0) {
-                digitArr = ZERO;
-            } else if (i == 1) {
-                digitArr = ONE;
-            } else if (i == 2) {
-                digitArr = TWO;
-            } else if (i == 3) {
-                digitArr = THREE;
-            } else if (i == 4) {
-                digitArr = FOUR;
-            } else if (i == 5) {
-                digitArr = FIVE;
-            } else if (i == 6) {
-                digitArr = SIX;
-            } else if (i == 7) {
-                digitArr = SEVEN;
-            } else if (i == 8) {
-                digitArr = EIGHT;
-            } else if (i == 9) {
-                digitArr = NINE;
-            }
-            digitStrings.add(digitToStringList(digitArr));
+            final List<Integer> digitList = DISPLAY_VALUE_MAP.entrySet().stream()
+                    .filter(e -> e.getValue() == i)
+                    .map(Map.Entry::getKey)
+                    .findFirst()
+                    .orElse(ImmutableList.of());
+
+            digitStrings.add(digitToStringList(digitList));
         }
         return print(digitStrings);
     }
 
-    static List<String> digitToStringList(final int[] digit) {
+    static List<String> digitToStringList(final List<Integer> digit) {
         final String digitTemplate = " 0000 |1    2|1    2| 3333 |4    5|4    5| 6666 ";
-        final String positionsStr = new String(POSITIONS);
+        final String positionsStr = Joiner.on("").join(POSITIONS);
         String result = digitTemplate;
         for (int i = 0; i < 7; i++) {
-            final String replacement = digit[i] == 1 ? ""+ positionsStr.charAt(i) : ".";
+            final String replacement = digit.get(i) == 1 ? ""+ positionsStr.charAt(i) : ".";
             result = result.replaceAll(""+i, replacement);
         }
 
@@ -103,5 +103,9 @@ public class Display {
         result.forEach(System.out::println);
         System.out.println("------------------------------\n");
         return result;
+    }
+
+    static List<Integer> toIntegerList(final int[] arr) {
+        return Arrays.stream(arr).boxed().collect(Collectors.toList());
     }
 }

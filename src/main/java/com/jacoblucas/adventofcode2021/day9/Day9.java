@@ -58,27 +58,22 @@ public class Day9 {
         // A low point is one where every neighbouring element is greater than it
         for (int y = 0; y < heightmap.length; y++) {
             for (int x = 0; x < heightmap[y].length; x++) {
-                final int value = heightmap[y][x];
-                final List<Integer> neighbourValues = new ArrayList<>();
+                final int height = heightmap[y][x];
+                final List<Integer> neighbourHeights = new ArrayList<>();
 
                 for (int dy = -1; dy <= 1; dy++) {
                     for (int dx = -1; dx <= 1; dx++) {
                         int neighbourX = x + dx;
                         int neighbourY = y + dy;
-                        if (!(Math.abs(dx) + Math.abs(dy) == 1)) {
-                            // Ignore diagonals, and the actual x,y coordinate
-                            continue;
-                        }
-
-                        if (neighbourX >= 0 && neighbourX < heightmap[y].length && neighbourY >= 0 && neighbourY < heightmap.length) {
+                        if (validDirection(dx, dy) && inBounds(neighbourX, neighbourY, heightmap)) {
                             // actually on the heightmap
-                            int neighbourValue = heightmap[neighbourY][neighbourX];
-                            neighbourValues.add(neighbourValue);
+                            int neighbourHeight = heightmap[neighbourY][neighbourX];
+                            neighbourHeights.add(neighbourHeight);
                         }
                     }
                 }
 
-                if (neighbourValues.stream().allMatch(v -> v > value)) {
+                if (neighbourHeights.stream().allMatch(h -> h > height)) {
                     lowPoints.add(ImmutablePoint.of(x, y));
                 }
             }
@@ -110,12 +105,7 @@ public class Day9 {
                 for (int dx = -1; dx <= 1; dx++) {
                     int neighbourX = x + dx;
                     int neighbourY = y + dy;
-                    if (!(Math.abs(dx) + Math.abs(dy) == 1)) {
-                        // Ignore diagonals, and the actual x,y coordinate
-                        continue;
-                    }
-
-                    if (neighbourX >= 0 && neighbourX < heightmap[y].length && neighbourY >= 0 && neighbourY < heightmap.length) {
+                    if (validDirection(dx, dy) && inBounds(neighbourX, neighbourY, heightmap)) {
                         // found a valid neighbour
                         final ImmutablePoint neighbour = ImmutablePoint.of(neighbourX, neighbourY);
                         if (!visited.contains(neighbour) && heightmap[neighbourY][neighbourX] != 9) {
@@ -127,5 +117,14 @@ public class Day9 {
         }
 
         return visited;
+    }
+
+    private static boolean inBounds(int x, int y, int[][] heightmap) {
+        return x >= 0 && x < heightmap[0].length && y >= 0 && y < heightmap.length;
+    }
+
+    // Valid directions are up,down,left,right... ignore diagonals, and the actual x,y coordinate
+    private static boolean validDirection(int dx, int dy) {
+        return Math.abs(dx) + Math.abs(dy) == 1;
     }
 }

@@ -56,7 +56,36 @@ public class Day10Test {
         lines.add("<{([([[(<>()){}]>(<<{{");
         lines.add("<{([{{}}[<[[[<>{}]]]>[]]");
 
-        int score = Day10.score(lines);
+        int score = Day10.scoreSyntaxCheck(lines);
         assertThat(score, is(26397));
+    }
+
+    @Test
+    public void testAutoComplete() {
+        assertThat(Day10.autoComplete("[({(<(())[]>[[{[]{<()<>>"), is("}}]])})]"));
+        assertThat(Day10.autoComplete("[(()[<>])]({[<{<<[]>>("), is(")}>]})"));
+        assertThat(Day10.autoComplete("(((({<>}<{<{<>}{[]{[]{}"), is("}}>}>))))"));
+        assertThat(Day10.autoComplete("{<[[]]>}<{[{[{[]{()[[[]"), is("]]}}]}]}>"));
+        assertThat(Day10.autoComplete("<{([{{}}[<[[[<>{}]]]>[]]"), is("])}>"));
+    }
+
+    @Test
+    public void testScoreAutoComplete() {
+        assertThat(Day10.scoreAutoComplete("}}]])})]"), is(288957L));
+        assertThat(Day10.scoreAutoComplete(")}>]})"), is(5566L));
+        assertThat(Day10.scoreAutoComplete("}}>}>))))"), is(1480781L));
+        assertThat(Day10.scoreAutoComplete("]]}}]}]}>"), is(995444L));
+        assertThat(Day10.scoreAutoComplete("])}>"), is(294L));
+    }
+
+    @Test
+    public void testScoreAutoCompleteLines() {
+        final List<String> lines = new ArrayList<>();
+        lines.add("[({(<(())[]>[[{[]{<()<>>");
+        lines.add("[(()[<>])]({[<{<<[]>>(");
+        lines.add("(((({<>}<{<{<>}{[]{[]{}");
+        lines.add("{<[[]]>}<{[{[{[]{()[[[]");
+        lines.add("<{([{{}}[<[[[<>{}]]]>[]]");
+        assertThat(Day10.scoreAutoComplete(lines), is(288957L));
     }
 }

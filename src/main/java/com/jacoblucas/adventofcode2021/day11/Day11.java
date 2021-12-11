@@ -6,6 +6,7 @@ import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
@@ -13,6 +14,9 @@ import java.util.Set;
 
 public class Day11 {
     public static final int GRID_SIZE = 10;
+
+    // Change to false to print the animations to stdout
+    private static final boolean silent = true;
 
     public static void main(String[] args) throws IOException {
         final List<String> lines = InputReader.read("day11-input.txt");
@@ -26,7 +30,8 @@ public class Day11 {
         for (; i < 100; i++) {
             flashCount += step(grid);
         }
-        System.out.println(flashCount);
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 
         // Part 2
         boolean allFlashed = false;
@@ -34,6 +39,8 @@ public class Day11 {
             allFlashed = step(grid) == 100;
             i++;
         }
+
+        System.out.println("Part 1: " + flashCount);
         System.out.println("All flashed at step: " + i);
     }
 
@@ -46,6 +53,28 @@ public class Day11 {
         }
     }
 
+    public static void print(final int[][] grid) {
+        if (!silent) {
+            Arrays.stream(grid).forEach(row -> {
+                final StringBuilder sb = new StringBuilder();
+                sb.append("[ ");
+                Arrays.stream(row).forEach(i -> {
+                    sb.append(i < 10 ? " " + i : i);
+                    sb.append(" ");
+                });
+                sb.append("]");
+                System.out.println(sb);
+            });
+            try {
+                Thread.sleep(70);
+            } catch (InterruptedException e) {
+                // do nothing
+            }
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
+    }
+
     public static int step(final int[][] grid) {
         // 1. Increase by 1
         for (int y = 0; y < grid.length; y++) {
@@ -53,6 +82,7 @@ public class Day11 {
                 grid[y][x] = grid[y][x] + 1;
             }
         }
+        print(grid);
 
         // 2. Any point > 9 flashes
         final Queue<Point> flashQueue = new ArrayDeque<>();
@@ -66,9 +96,11 @@ public class Day11 {
         }
         final Set<Point> flashed = new HashSet<>();
         flash(grid, flashQueue, flashed);
+        print(grid);
 
         // 3. Reset those that flashed to 0
         flashed.forEach(p -> grid[p.getY()][p.getX()] = 0);
+        print(grid);
         return flashed.size();
     }
 

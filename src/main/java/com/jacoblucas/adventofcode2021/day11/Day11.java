@@ -22,10 +22,19 @@ public class Day11 {
 
         // Part 1
         int flashCount = 0;
-        for (int i = 0; i < 100; i++) {
+        int i = 0;
+        for (; i < 100; i++) {
             flashCount += step(grid);
         }
         System.out.println(flashCount);
+
+        // Part 2
+        boolean allFlashed = false;
+        while (!allFlashed) {
+            allFlashed = step(grid) == 100;
+            i++;
+        }
+        System.out.println("All flashed at step: " + i);
     }
 
     public static void init(final int[][] grid, final List<String> lines) {

@@ -43,7 +43,7 @@ public class Day12Test {
 
     @Test
     public void testFindPathsExample1() {
-        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves);
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part1VisitRule);
         assertThat(paths.size(), is(10));
     }
 
@@ -51,7 +51,7 @@ public class Day12Test {
     public void testFindPathsExample2() throws IOException {
         final List<String> input = InputReader.readFile("src/test/resources/", "day12-test-input1.txt");
         final Map<String, Cave> caves = Day12.parse(input);
-        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves);
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part1VisitRule);
         assertThat(paths.size(), is(19));
     }
 
@@ -59,7 +59,55 @@ public class Day12Test {
     public void testFindPathsExample3() throws IOException {
         final List<String> input = InputReader.readFile("src/test/resources/", "day12-test-input2.txt");
         final Map<String, Cave> caves = Day12.parse(input);
-        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves);
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part1VisitRule);
         assertThat(paths.size(), is(226));
+    }
+
+    @Test
+    public void testFindPathsExample1Part2Rule() {
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part2VisitRule);
+        assertThat(paths.size(), is(36));
+    }
+
+    @Test
+    public void testFindPathsExample2Part2Rule() throws IOException {
+        final List<String> input = InputReader.readFile("src/test/resources/", "day12-test-input1.txt");
+        final Map<String, Cave> caves = Day12.parse(input);
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part2VisitRule);
+        assertThat(paths.size(), is(103));
+    }
+
+    @Test
+    public void testFindPathsExample3Part2Rule() throws IOException {
+        final List<String> input = InputReader.readFile("src/test/resources/", "day12-test-input2.txt");
+        final Map<String, Cave> caves = Day12.parse(input);
+        final List<List<Cave>> paths = Day12.findAllPaths("start", "end", caves, Day12::part2VisitRule);
+        assertThat(paths.size(), is(3509));
+    }
+
+    @Test
+    public void testPart1VisitRule() {
+        final Cave start = new Cave("start");
+        final Cave A = new Cave("A");
+        final Cave b = new Cave("b");
+        final Cave c = new Cave("c");
+
+        assertThat(Day12.part1VisitRule(b, ImmutableList.of(start, A)), is(true)); // can visit b
+        assertThat(Day12.part1VisitRule(b, ImmutableList.of(start, A, b, A)), is(false)); // can't visit b again
+        assertThat(Day12.part1VisitRule(c, ImmutableList.of(start, A, b, A)), is(true)); // can visit c
+    }
+
+    @Test
+    public void testPart2VisitRule() {
+        final Cave start = new Cave("start");
+        final Cave A = new Cave("A");
+        final Cave b = new Cave("b");
+        final Cave c = new Cave("c");
+        final Cave d = new Cave("d");
+
+        assertThat(Day12.part2VisitRule(b, ImmutableList.of(start, A, b, A)), is(true)); // can visit b again
+        assertThat(Day12.part2VisitRule(c, ImmutableList.of(start, A, b, A, b, A, c)), is(false)); // can't visit c again
+        assertThat(Day12.part2VisitRule(d, ImmutableList.of(start, b, A, b, A)), is(true)); // can visit d
+        assertThat(Day12.part2VisitRule(start, ImmutableList.of(start, A, b, A, b, A, c)), is(false)); // can't visit start again
     }
 }

@@ -1,6 +1,5 @@
 package com.jacoblucas.adventofcode2021.day12;
 
-import com.jacoblucas.adventofcode2021.interfaces.Function2;
 import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class Day12 {
@@ -46,7 +46,7 @@ public class Day12 {
             final String src,
             final String dest,
             final Map<String, Cave> caveMap,
-            final Function2<Cave, List<Cave>, Boolean> visitFunc
+            final BiFunction<Cave, List<Cave>, Boolean> visitFunc
     ) {
         final List<List<Cave>> paths = new ArrayList<>();
         List<Cave> path = new ArrayList<>();
@@ -62,7 +62,7 @@ public class Day12 {
             final Map<String, Cave> caveMap,
             final List<Cave> path,
             final List<List<Cave>> foundPaths,
-            final Function2<Cave, List<Cave>, Boolean> visitFunc
+            final BiFunction<Cave, List<Cave>, Boolean> visitFunc
     ) {
         final List<Cave> localPath = new ArrayList<>(path);
         if (id.equals(dest)) {

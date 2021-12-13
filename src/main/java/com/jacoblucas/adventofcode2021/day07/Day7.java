@@ -1,6 +1,5 @@
 package com.jacoblucas.adventofcode2021.day07;
 
-import com.jacoblucas.adventofcode2021.interfaces.IntIntFunction;
 import com.jacoblucas.adventofcode2021.utils.InputReader;
 
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -34,7 +34,7 @@ public class Day7 {
                 .collect(Collectors.toMap(e -> Integer.valueOf(e.getKey()), e -> e.getValue().size()));
     }
 
-    public static int getMinFuelCost(final Map<Integer, Integer> crabs, final IntIntFunction<Integer> costFunc) {
+    public static int getMinFuelCost(final Map<Integer, Integer> crabs, final BiFunction<Integer, Integer, Integer> costFunc) {
         int minFuelCost = Integer.MAX_VALUE;
         for (int i=0; i<2000; i++) { // eyeballed the approx max value from the input list
             final int fuelCost = moveCrabsToPosition(new HashMap<>(crabs), i, costFunc);
@@ -48,7 +48,7 @@ public class Day7 {
     public static int moveCrabsToPosition(
             final Map<Integer, Integer> crabs,
             final int position,
-            final IntIntFunction<Integer> costFunc
+            final BiFunction<Integer, Integer, Integer> costFunc
     ) {
         int fuelCost = 0;
         final List<Integer> positionsToMove = crabs.keySet()

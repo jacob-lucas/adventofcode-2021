@@ -3,7 +3,9 @@ package com.jacoblucas.adventofcode2021.day14;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,15 +62,15 @@ public class Day14Test {
 
     @Test
     public void testPairInsertion() {
-        assertThat(Day14.pairInsertion("NNCB", rules), is("NCNBCHB"));
+        assertThat(Day14.pairInsertionV1("NNCB", rules), is("NCNBCHB"));
     }
 
     @Test
     public void testPairInsertion4x() {
-        String result = Day14.pairInsertion("NNCB", rules); // 1
-        result = Day14.pairInsertion(result, rules); // 2
-        result = Day14.pairInsertion(result, rules); // 3
-        result = Day14.pairInsertion(result, rules); // 4
+        String result = Day14.pairInsertionV1("NNCB", rules); // 1
+        result = Day14.pairInsertionV1(result, rules); // 2
+        result = Day14.pairInsertionV1(result, rules); // 3
+        result = Day14.pairInsertionV1(result, rules); // 4
 
         assertThat(result, is("NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB"));
     }
@@ -81,5 +83,76 @@ public class Day14Test {
         assertThat(grouped.get('B'), is(2));
         assertThat(grouped.get('C'), is(2));
         assertThat(grouped.get('H'), is(1));
+    }
+
+    @Test
+    public void testPairInsertionV2Example1() {
+        // result is "NCNBCHB"
+        final Map<Character, BigInteger> expected = new HashMap<>();
+        expected.put('N', BigInteger.valueOf(2L));
+        expected.put('B', BigInteger.valueOf(2L));
+        expected.put('C', BigInteger.valueOf(2L));
+        expected.put('H', BigInteger.valueOf(1L));
+
+        assertThat(Day14.pairInsertionV2("NNCB", rules, 1), is(expected));
+    }
+
+    @Test
+    public void testPairInsertionV2Example2() {
+        // result is "NBCCNBBBCBHCB"
+        final Map<Character, BigInteger> expected = new HashMap<>();
+        expected.put('N', BigInteger.valueOf(2L));
+        expected.put('B', BigInteger.valueOf(6L));
+        expected.put('C', BigInteger.valueOf(4L));
+        expected.put('H', BigInteger.valueOf(1L));
+
+        assertThat(Day14.pairInsertionV2("NCNBCHB", rules, 1), is(expected));
+    }
+
+    @Test
+    public void testPairInsertionIteration() {
+        // result is
+        // "NNCB" -> "NCNBCHB" ->
+        // "NCNBCHB" -> "NBCCNBBBCBHCB" ->
+        // "NBCCNBBBCBHCB" -> "NBBBCNCCNBBNBNBBCHBHHBCHB" ->
+        // "NBBBCNCCNBBNBNBBCHBHHBCHB" -> "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB"
+        final Map<Character, BigInteger> expected = new HashMap<>();
+        expected.put('N', BigInteger.valueOf(11L));
+        expected.put('B', BigInteger.valueOf(23L));
+        expected.put('C', BigInteger.valueOf(10L));
+        expected.put('H', BigInteger.valueOf(5L));
+
+        assertThat(Day14.pairInsertionV2("NNCB", rules, 4), is(expected));
+    }
+
+//    @Test
+//    public void testGroupByCharV2() {
+//        final Map<Pair<Character, Character>, BigInteger> pairCountMap = new HashMap<>();
+//        pairCountMap.put(ModifiablePair.create('N', 'B'), BigInteger.valueOf(2L));
+//        pairCountMap.put(ModifiablePair.create('B', 'C'), BigInteger.valueOf(2L));
+//        pairCountMap.put(ModifiablePair.create('C', 'C'), BigInteger.valueOf(1L));
+//        pairCountMap.put(ModifiablePair.create('C', 'N'), BigInteger.valueOf(1L));
+//        pairCountMap.put(ModifiablePair.create('B', 'B'), BigInteger.valueOf(2L));
+//        pairCountMap.put(ModifiablePair.create('C', 'B'), BigInteger.valueOf(2L));
+//        pairCountMap.put(ModifiablePair.create('B', 'H'), BigInteger.valueOf(1L));
+//        pairCountMap.put(ModifiablePair.create('H', 'C'), BigInteger.valueOf(1L));
+//
+//        final Map<Character, BigInteger> expected = new HashMap<>();
+//        expected.put('N', BigInteger.valueOf(1*2 + 1*1));
+//        expected.put('B', BigInteger.valueOf(1*2 + 1*2 + 2*2 + 1*2 + 1*1));
+//        expected.put('C', BigInteger.valueOf(1*1 + 1*2 + 1*1 + 2*1 + 1*2));
+//        expected.put('H', BigInteger.valueOf(1*1 + 1*1));
+//
+//        final Map<Character, BigInteger> result = Day14.groupByCharV2(pairCountMap);
+//        assertThat(result, is(expected));
+//    }
+
+    @Test
+    public void testPart2FullExample() {
+        final Map<Character, BigInteger> result = Day14.pairInsertionV2("NNCB", rules, 40);
+        BigInteger mostCommon = result.values().stream().max(Comparator.naturalOrder()).get();
+        BigInteger leastCommon = result.values().stream().min(Comparator.naturalOrder()).get();
+        long delta = mostCommon.subtract(leastCommon).longValue();
+        assertThat(delta, is(2188189693529L));
     }
 }

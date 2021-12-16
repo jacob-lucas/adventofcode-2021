@@ -9,4 +9,9 @@ public abstract class Point {
 
     @Value.Parameter
     public abstract int getY();
+
+    @Override
+    public String toString() {
+        return "(" + getX() + "," + getY() + ")";
+    }
 }

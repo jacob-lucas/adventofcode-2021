@@ -17,6 +17,15 @@ public abstract class SingleListInputProblem implements Runnable {
         }
     }
 
+    public void init(final String path, final String filename) {
+        try {
+            input = InputReader.readFile(path, filename);
+        } catch (IOException e) {
+            System.out.println("Unable to initialise from " + filename);
+            e.printStackTrace();
+        }
+    }
+
     // Execute the solution for the problem
     @Override
     public abstract void run();

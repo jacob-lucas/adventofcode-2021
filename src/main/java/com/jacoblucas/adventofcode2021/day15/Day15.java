@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Day15 extends SingleListInputProblem {
-    private int[][] cavern;
+    protected int[][] cavern;
 
     @Override
     public void run() {
@@ -19,6 +19,10 @@ public class Day15 extends SingleListInputProblem {
         buildCavern();
 
         // Part 1
+        System.out.println(getLowestTotalRisk());
+
+        // Part 2
+        cavern = addAllTiles(cavern, 5);
         System.out.println(getLowestTotalRisk());
     }
 
@@ -33,7 +37,7 @@ public class Day15 extends SingleListInputProblem {
     }
 
     public int getLowestTotalRisk() {
-        int[][] risks = new int[input.size()][input.get(0).length()];
+        int[][] risks = new int[cavern.length][cavern[0].length];
         for (int[] risk : risks) {
             Arrays.fill(risk, 9999999); // something sufficiently high
         }
@@ -101,6 +105,28 @@ public class Day15 extends SingleListInputProblem {
             }
         }
         return neighbours;
+    }
+
+    public int[][] addAllTiles(final int[][] cavern, final int tiles) {
+        int[][] allTiles = new int[tiles * cavern.length][tiles * cavern[0].length];
+        for (int y = 0; y < cavern.length; y++) {
+            for (int x = 0; x < cavern[0].length; x++) {
+                int originalRisk = cavern[y][x]; // from the 1st tile
+                for (int j = 0; j < tiles; j++) {
+                    for (int i = 0; i < tiles; i++) {
+                        int newRisk = originalRisk + i + j;
+
+                        if (newRisk > 9) {
+                            newRisk -= 9;
+                        }
+
+                        allTiles[y + j * cavern.length][x + i * cavern[0].length] = newRisk;
+                    }
+                }
+            }
+        }
+
+        return allTiles;
     }
 
     public static void main(String[] args) {

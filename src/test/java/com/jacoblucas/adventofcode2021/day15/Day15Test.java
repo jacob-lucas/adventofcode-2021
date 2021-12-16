@@ -3,6 +3,8 @@ package com.jacoblucas.adventofcode2021.day15;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -32,19 +34,31 @@ public class Day15Test {
 
     @Test
     public void testGetLowestTotalRisk() {
-        /*
-            [41*, 41,  40,  34,  37,  30,  25,  35,  32,   41 ]
-            [40*, 40,  39,  31,  30,  29,  24,  28,  28,   39 ]
-            [39*, 37*, 36*, 33*, 27*, 22*, 21*, 22,  21,   37 ]
-            [43,  42,  39,  30,  31,  22,  20*, 19*, 19,   29 ]
-            [40,  36,  32,  26,  23,  19,  21,  14*, 13,   20 ]
-            [33,  32,  29,  28,  19,  18,  21,  13*, 12*,  19 ]
-            [32,  31,  32,  34,  25,  16,  15,  13,   9*,  12 ]
-            [31,  28,  27,  25,  20,  16,  14,  13,   7*,  11 ]
-            [36,  35,  33,  24,  21,  20,  17,   9,   4*,   2*]
-            [38,  36,  33,  32,  31,  22,  18,  14,   9,    1*]
-         */
+        // [040*, 040,  034,  031,  030,  025,  024,  025,  028,  030 ]
+        // [039*, 037,  031,  030,  027,  022,  021,  022,  021,  028 ]
+        // [037*, 036*, 033*, 027*, 022*, 021*, 020*, 019,  019,  021 ]
+        // [039,  036,  030,  026,  022,  019,  019*, 014*, 013,  014 ]
+        // [033,  032,  026,  023,  019,  018,  014,  013*, 012*, 013 ]
+        // [032,  029,  028,  019,  018,  016,  013,  012,  009*, 010 ]
+        // [031,  028,  027,  025,  016,  015,  013,  009,  007*, 009 ]
+        // [028,  027,  025,  020,  016,  014,  013,  007,  004*, 002 ]
+        // [030,  028,  023,  020,  019,  016,  009,  004,  002*, 001*]
+        // [028,  025,  024,  023,  020,  018,  014,  009,  001,  000*]
 
         assertThat(day15.getLowestTotalRisk(), is(40));
+    }
+
+    @Test
+    public void testAddAllTiles() {
+        final int[][] allTiles = day15.addAllTiles(day15.cavern, 5);
+
+        day15.init("src/test/resources/", "day15-expanded.txt");
+        day15.buildCavern();
+
+        assertThat(allTiles.length, is(day15.cavern.length));
+
+        for (int i = 0; i < allTiles.length; i++) {
+            assertThat(Arrays.equals(allTiles[i], day15.cavern[i]), is(true));
+        }
     }
 }

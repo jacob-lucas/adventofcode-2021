@@ -46,46 +46,46 @@ public class PacketTypeTest {
     @Test
     public void testSum() {
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("C200B40A82");
-        assertThat(SUM.getOperation().apply(packet.getPackets()), is(3));
+        assertThat(SUM.getOperation().apply(packet.getPackets()), is(3L));
     }
 
     @Test
     public void testProduct() {
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("04005AC33890");
-        assertThat(PRODUCT.getOperation().apply(packet.getPackets()), is(54));
+        assertThat(PRODUCT.getOperation().apply(packet.getPackets()), is(54L));
     }
 
     @Test
     public void testMinimum() {
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("880086C3E88112");
-        assertThat(MINIMUM.getOperation().apply(packet.getPackets()), is(7));
+        assertThat(MINIMUM.getOperation().apply(packet.getPackets()), is(7L));
     }
 
     @Test
     public void testMaximum() {
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("CE00C43D881120");
-        assertThat(MAXIMUM.getOperation().apply(packet.getPackets()), is(9));
+        assertThat(MAXIMUM.getOperation().apply(packet.getPackets()), is(9L));
     }
 
     @Test
     public void testGreater() {
         // Contains (5, 15)
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("D8005AC2A8F0");
-        assertThat(GREATER.getOperation().apply(packet.getPackets()), is(0));
-        assertThat(LESS.getOperation().apply(packet.getPackets()), is(1));
+        assertThat(GREATER.getOperation().apply(packet.getPackets()), is(0L));
+        assertThat(LESS.getOperation().apply(packet.getPackets()), is(1L));
     }
 
     @Test
     public void testLess() {
         // Contains (5, 15)
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("F600BC2D8F");
-        assertThat(GREATER.getOperation().apply(packet.getPackets()), is(0));
-        assertThat(LESS.getOperation().apply(packet.getPackets()), is(1));
+        assertThat(GREATER.getOperation().apply(packet.getPackets()), is(0L));
+        assertThat(LESS.getOperation().apply(packet.getPackets()), is(1L));
     }
 
     @Test
     public void testEquals() {
         final OperatorPacket packet = (OperatorPacket) PacketDecoder.decodeHex("9C0141080250320F1802104A08");
-        assertThat(EQUALS.getOperation().apply(packet.getPackets()), is(1));
+        assertThat(EQUALS.getOperation().apply(packet.getPackets()), is(1L));
     }
 }

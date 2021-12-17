@@ -16,7 +16,7 @@ public class LiteralPacketTest {
 
     @Test
     public void testGet() {
-        assertThat(literalPacket.get(), is(2021));
+        assertThat(literalPacket.get(), is(2021L));
     }
 
     @Test

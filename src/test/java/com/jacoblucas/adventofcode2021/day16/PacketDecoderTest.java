@@ -21,7 +21,7 @@ public class PacketDecoderTest {
 
     @Test
     public void testBinaryToInt() {
-        assertThat(PacketDecoder.binaryToInt("110"), is(6));
+        assertThat(PacketDecoder.binaryToDecimal("110"), is(6));
     }
 
     @Test

@@ -21,7 +21,7 @@ public abstract class Packet {
 
     public abstract int getVersionSum();
 
-    public abstract int get();
+    public abstract long get();
 
     @Override
     public boolean equals(Object o) {

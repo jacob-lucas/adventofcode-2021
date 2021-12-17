@@ -18,4 +18,10 @@ public class LiteralPacketTest {
     public void testGet() {
         assertThat(literalPacket.get(), is(2021));
     }
+
+    @Test
+    public void testLongValue() {
+        final LiteralPacket longValueLiteralPacket = new LiteralPacket("1111001111111111110011010011100101011110000100");
+        assertThat(longValueLiteralPacket.get(), is(4287940036L));
+    }
 }

@@ -20,12 +20,12 @@ public abstract class Header {
 
     @Value.Derived
     public int getVersion() {
-        return PacketDecoder.binaryToInt(getBinaryString().substring(0, 3));
+        return (int) PacketDecoder.binaryToDecimal(getBinaryString().substring(0, 3));
     }
 
     @Value.Derived
     public PacketType getPacketType() {
-        return PacketType.byId(PacketDecoder.binaryToInt(getBinaryString().substring(3)));
+        return PacketType.byId((int) PacketDecoder.binaryToDecimal(getBinaryString().substring(3)));
     }
 
     @Value.Check

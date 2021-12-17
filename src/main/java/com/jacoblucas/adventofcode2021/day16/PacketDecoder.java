@@ -30,14 +30,14 @@ public final class PacketDecoder {
         return hex;
     }
 
-    public static int binaryToInt(final String binary) {
-        return Integer.parseInt(binary, 2);
+    public static long binaryToDecimal(final String binary) {
+        return Long.parseLong(binary, 2);
     }
 
     public static Packet decodeBinary(final String binaryString) {
         // Grab the header
         final Header header = ImmutableHeader.of(binaryString.substring(0, Header.LENGTH));
-        if (header.getPacketType() == PacketType.OPERATOR) {
+        if (header.getPacketType().isOperator()) {
             return decodeOperator(binaryString);
         } else if (header.getPacketType() == PacketType.LITERAL) {
             return decodeLiteral(binaryString);
@@ -66,7 +66,7 @@ public final class PacketDecoder {
             final int bitCountStartIndex = lengthTypeIdIndex + 1;
             final int bitCountEndIndex = bitCountStartIndex + 15;
             final String bitsBinaryString = binaryString.substring(bitCountStartIndex, bitCountEndIndex);
-            final int subPacketBits = PacketDecoder.binaryToInt(bitsBinaryString);
+            final int subPacketBits = (int) PacketDecoder.binaryToDecimal(bitsBinaryString);
 
             final int packetStartIndex = bitCountEndIndex;
             final int packetEndIndex = packetStartIndex + subPacketBits;
@@ -84,7 +84,7 @@ public final class PacketDecoder {
             final int bitCountStartIndex = lengthTypeIdIndex + 1;
             final int bitCountEndIndex = bitCountStartIndex + 11;
             final String packetCountBinaryString = binaryString.substring(bitCountStartIndex, bitCountEndIndex);
-            final int subPacketBits = PacketDecoder.binaryToInt(packetCountBinaryString);
+            final int subPacketBits = (int) PacketDecoder.binaryToDecimal(packetCountBinaryString);
             String packetsBinaryString = binaryString.substring(bitCountEndIndex); // who knows how long this is?
 
             final List<Packet> packets = new ArrayList<>();

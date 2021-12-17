@@ -20,7 +20,8 @@ public class LiteralPacket extends Packet {
         return getHeader().getVersion();
     }
 
-    public int get() {
+    @Override
+    public long get() {
         final String str = getPacketString();
         final List<String> groups = new ArrayList<>();
 
@@ -33,6 +34,6 @@ public class LiteralPacket extends Packet {
             hasMoreGroups = group.charAt(0) == '1';
         } while (hasMoreGroups);
 
-        return PacketDecoder.binaryToInt(String.join("", groups));
+        return PacketDecoder.binaryToDecimal(String.join("", groups));
     }
 }

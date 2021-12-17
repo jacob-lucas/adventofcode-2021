@@ -10,6 +10,10 @@ public class OperatorPacket extends Packet {
         this.packets = packets;
     }
 
+    public List<Packet> getPackets() {
+        return packets;
+    }
+
     /**
      * If the length type ID is 0, then the next 15 bits are a number that represents the total length in bits of the
      * sub-packets contained by this packet.
@@ -24,5 +28,11 @@ public class OperatorPacket extends Packet {
     @Override
     public int getVersionSum() {
         return getHeader().getVersion() + packets.stream().mapToInt(Packet::getVersionSum).sum();
+    }
+
+    @Override
+    public long get() {
+        final PacketType packetType = getHeader().getPacketType();
+        return packetType.getOperation().apply(packets);
     }
 }

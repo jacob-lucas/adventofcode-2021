@@ -10,6 +10,9 @@ public class Day16 extends SingleListInputProblem {
 
         // Part 1
         System.out.println(packet.getVersionSum());
+
+        // Part 2
+        System.out.println(packet.get());
     }
 
     public static void main(String[] args) {

@@ -20,4 +20,21 @@ public abstract class Packet {
     }
 
     public abstract int getVersionSum();
+
+    public abstract int get();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Packet packet = (Packet) o;
+
+        return binaryString.equals(packet.binaryString);
+    }
+
+    @Override
+    public int hashCode() {
+        return binaryString.hashCode();
+    }
 }

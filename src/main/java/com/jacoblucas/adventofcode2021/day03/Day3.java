@@ -1,6 +1,6 @@
 package com.jacoblucas.adventofcode2021.day03;
 
-import com.jacoblucas.adventofcode2021.utils.InputReader;
+import com.jacoblucas.adventofcode2021.SingleListInputProblem;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -11,9 +11,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Day3 {
+public class Day3 extends SingleListInputProblem {
     public static void main(String[] args) throws IOException {
-        final List<String> input = InputReader.read("day3-input.txt");
+        new Day3().run();
+    }
+
+    @Override
+    public void run() {
+        init("day3-input.txt");
 
         final int powerConsumption = getPowerConsumption(input);
         System.out.println(powerConsumption);

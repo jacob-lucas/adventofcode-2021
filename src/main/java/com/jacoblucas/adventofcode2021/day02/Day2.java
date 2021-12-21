@@ -1,13 +1,13 @@
 package com.jacoblucas.adventofcode2021.day02;
 
-import com.jacoblucas.adventofcode2021.utils.InputReader;
+import com.jacoblucas.adventofcode2021.SingleListInputProblem;
 
 import java.io.IOException;
-import java.util.List;
 
-public class Day2 {
-    public static void main(String[] args) throws IOException {
-        final List<String> input = InputReader.read("day2-input.txt");
+public class Day2 extends SingleListInputProblem {
+    @Override
+    public void run() {
+        init("day2-input.txt");
 
         final Submarine submarine1 = new Submarine();
         input.forEach(cmd -> submarine1.execute(cmd, 1));
@@ -16,5 +16,9 @@ public class Day2 {
         final Submarine submarine2 = new Submarine();
         input.forEach(submarine2::execute);
         System.out.println(submarine2.getDepth() * submarine2.getPosition());
+    }
+
+    public static void main(String[] args) throws IOException {
+        new Day2().run();
     }
 }

@@ -1,6 +1,6 @@
 package com.jacoblucas.adventofcode2021.day04;
 
-import com.jacoblucas.adventofcode2021.utils.InputReader;
+import com.jacoblucas.adventofcode2021.GroupedListInputProblem;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class Day4 {
-    public static void main(String[] args) throws IOException {
-        final List<List<String>> input = InputReader.readGroups("day4-input.txt");
+public class Day4 extends GroupedListInputProblem {
+    @Override
+    public void run() {
+        init("day4-input.txt");
 
         final List<Integer> numbers = parseNumbers(input);
         final List<BingoBoard> boards = parseBoards(input);
@@ -23,6 +24,10 @@ public class Day4 {
 
         final BingoBoard lastPlace = bingo.getLast();
         System.out.println("Last winning score: " + lastPlace.getScore());
+    }
+
+    public static void main(String[] args) throws IOException {
+        new Day4().run();
     }
 
     static List<Integer> parseNumbers(final List<List<String>> input) {

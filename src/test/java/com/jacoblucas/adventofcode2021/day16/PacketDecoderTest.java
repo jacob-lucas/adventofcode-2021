@@ -77,4 +77,10 @@ public class PacketDecoderTest {
     public void testGetVersionSumExample4() {
         assertThat(PacketDecoder.decodeHex("A0016C880162017C3686B18A3D4780").getVersionSum(), is(31));
     }
+
+    @Test
+    public void testDay1Part1Example() {
+        final Packet packet = PacketDecoder.decodeHex("2007FCE002033873388380080CE20CE80E002033A033A2380080CE88CE20E00203388338F380080CE3CCF80E002533E0323069C00546460D323021C005464604323038");
+        assertThat(packet.get(), is(7L));
+    }
 }

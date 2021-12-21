@@ -19,4 +19,12 @@ public class Day1Test {
         assertThat(day1.getWindowIncreases(depthMeasurements,1), is(7));
         assertThat(day1.getWindowIncreases(depthMeasurements,3), is(5));
     }
+
+    @Test
+    public void testGetWindowIncreasesPart1V2() {
+        final List<Integer> depthMeasurements = ImmutableList.of(
+                199, 200, 208, 210, 200, 207, 240, 269, 260, 263);
+
+        assertThat(day1.getWindowIncreasesPart1V2(depthMeasurements), is(7));
+    }
 }

@@ -1,15 +1,16 @@
 package com.jacoblucas.adventofcode2021.day05;
 
 import com.google.common.collect.ImmutableList;
-import com.jacoblucas.adventofcode2021.utils.InputReader;
+import com.jacoblucas.adventofcode2021.SingleListInputProblem;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Day5 {
-    public static void main(String[] args) throws IOException {
-        final List<String> input = InputReader.read("day5-input.txt");
+public class Day5 extends SingleListInputProblem {
+    @Override
+    public void run() {
+        init("day5-input.txt");
         final List<Vent> vents = parse(input);
 
         final int width = getXLimit(vents) + 1;
@@ -26,6 +27,10 @@ public class Day5 {
         grid = new Grid(width, height);
         grid.track(vents);
         System.out.println(grid.countWhere(i -> i >= 2));
+    }
+
+    public static void main(String[] args) throws IOException {
+        new Day5().run();
     }
 
     static List<Vent> parse(final List<String> input) {
@@ -51,5 +56,4 @@ public class Day5 {
                 .max()
                 .getAsInt();
     }
-
 }

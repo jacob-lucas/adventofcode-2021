@@ -10,7 +10,7 @@ public class Day17 extends SingleListInputProblem {
 
         // Part 1
         final int maxHeight = findMaxHeight(minX, maxX, minY, maxY);
-        System.out.println(maxHeight);
+        System.out.println("Max height = " + maxHeight);
     }
 
     public int findMaxHeight(final int minX, final int maxX, final int minY, final int maxY) {
@@ -23,6 +23,7 @@ public class Day17 extends SingleListInputProblem {
         int x1 = inc;
 
         int maxHeight = Integer.MIN_VALUE;
+        int hitCount = 0;
 
         // Fire using all the feasible candidates for velocities based on the x/y velocity constraints in the problem
         for (int y = minY; y <= (-minY - 1); y++) {
@@ -30,11 +31,14 @@ public class Day17 extends SingleListInputProblem {
                 final ProbeLauncher launcher = new ProbeLauncher();
                 final boolean hit = launcher.fire(minX, maxX, minY, maxY, x, y);
                 if (hit) {
+                    hitCount++;
                     maxHeight = Math.max(launcher.getMaxHeight(), maxHeight);
 //                    System.out.println("Hit the target with velocity (x=" + x + ",y=" + y + ") maxHeight=" + maxHeight);
                 }
             }
         }
+
+        System.out.println("Hit count = " + hitCount);
 
         return maxHeight;
     }

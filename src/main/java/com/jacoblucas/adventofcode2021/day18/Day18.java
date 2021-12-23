@@ -17,6 +17,18 @@ public class Day18 extends SingleListInputProblem {
         // Part 1
         final SnailfishNumber result = Calculator.add(numbers);
         System.out.println(result.getMagnitude());
+
+        // Part 2
+        long magnitude = Integer.MIN_VALUE;
+        for (final SnailfishNumber a : numbers) {
+            for (final SnailfishNumber b : numbers) {
+                if (!a.equals(b)) {
+                    magnitude = Math.max(magnitude, Calculator.add(a, b).getMagnitude());
+                    magnitude = Math.max(magnitude, Calculator.add(b, a).getMagnitude());
+                }
+            }
+        }
+        System.out.println(magnitude);
     }
 
     public static void main(String[] args) {

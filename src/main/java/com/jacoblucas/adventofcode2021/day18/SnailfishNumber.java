@@ -50,6 +50,10 @@ public class SnailfishNumber {
         this(new SnailfishNumber(left), new SnailfishNumber(right));
     }
 
+    public SnailfishNumber copy() {
+        return isValue() ? new SnailfishNumber(value) : new SnailfishNumber(getLeft().copy(), getRight().copy());
+    }
+
     public SnailfishNumber getParent() {
         return parent;
     }

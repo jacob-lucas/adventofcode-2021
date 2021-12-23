@@ -12,7 +12,7 @@ public class Calculator {
 
     public static SnailfishNumber add(final SnailfishNumber left, final SnailfishNumber right) {
 //        System.out.println("Adding " + left + " + " + right);
-        SnailfishNumber number = new SnailfishNumber(left, right);
+        SnailfishNumber number = new SnailfishNumber(left.copy(), right.copy());
 
         // Reduce!
         while (explode(number) || split(number));
@@ -20,6 +20,7 @@ public class Calculator {
 //        System.out.println("Result = " + number);
         return number;
     }
+
     static boolean explode(final SnailfishNumber number) {
         int parentCount = number.countParents();
         if (number.isValue()) {
